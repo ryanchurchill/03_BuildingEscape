@@ -2,6 +2,8 @@
 
 #include "PositionReport.h"
 #include "GameFramework/Actor.h"
+#include "Math/TransformNonVectorized.h"
+#include "Math/Vector.h"
 
 
 // Sets default values for this component's properties
@@ -22,7 +24,16 @@ void UPositionReport::BeginPlay()
 
 	AActor* Owner = GetOwner();
 	FString ObjectName = Owner->GetName();
-	UE_LOG(LogTemp, Warning, TEXT("Position report for %s\n"), *ObjectName);
+	FVector Position = Owner->GetTransform().GetTranslation();
+	//FText XPos = FText::AsNumber(Position.X);
+	//FText YPos = FText::AsNumber(Position.Y);
+	//FText ZPos = FText::AsNumber(Position.Z);
+	FString PositionsStr = Position.ToString();
+	//FString ObjectPos = FText::Format(TEXT("X=%s, Y=%s, Z=%s"), XPos, YPos, ZPos);
+	FString ObjectPosStr2 = FString::Printf(TEXT("X=%3.3f Y=%3.3f Z=%3.3f"), Position.X, Position.Y, Position.Z);
+	//FString ObjectPos = FText::Format(TEXT("hello"));
+
+	UE_LOG(LogTemp, Warning, TEXT("%s is at %s"), *ObjectName, *PositionsStr);
 	
 }
 
