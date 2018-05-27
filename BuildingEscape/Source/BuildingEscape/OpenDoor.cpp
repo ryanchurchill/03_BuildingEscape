@@ -49,10 +49,7 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	}
 
 	if (Button) {
-		UStaticMeshComponent* smc = Button->GetStaticMeshComponent();
-		FString hidden = FString::FromInt(smc->bHiddenInGame);
-		UE_LOG(LogTemp, Warning, TEXT("Hidden: %s"), *hidden);
-		if (hidden == "1")
+		if (Button->GetStaticMeshComponent()->bHiddenInGame == 1)
 		{
 			OnOpen.Broadcast();
 		}
