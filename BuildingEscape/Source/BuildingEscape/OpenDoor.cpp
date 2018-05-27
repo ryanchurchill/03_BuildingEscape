@@ -39,39 +39,16 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// Poll the Trigger Volume
-	if (GetTotalMassOfActorsOnPlate() > 50.f) // TODO: make into param
+	if (GetTotalMassOfActorsOnPlate() > TriggerMass) // TODO: make into param
 	{
-		OpenDoor();
-		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
+		OnOpen.Broadcast();
 	}
 	else
 	{
-		if (GetWorld()->GetTimeSeconds() > LastDoorOpenTime + DoorCloseDelaySecs) {
-			CloseDoor();
-		}
+		OnClose.Broadcast();
 	}
 }
 
-
-void UOpenDoor::OpenDoor()
-{
-	// Find the owning actor
-	AActor* Owner = GetOwner();
-
-	//FRotator NewRotation = FRotator(0.f, -90.f, 0.f);
-	//Owner->SetActorRotation(NewRotation);
-	OnOpenRequest.Broadcast();
-}
-
-void UOpenDoor::CloseDoor()
-{
-	// Find the owning actor
-	AActor* Owner = GetOwner();
-
-	FRotator NewRotation = FRotator(0.f, 180.f, 0.f);
-
-	Owner->SetActorRotation(NewRotation);
-}
 
 float UOpenDoor::GetTotalMassOfActorsOnPlate()
 {
