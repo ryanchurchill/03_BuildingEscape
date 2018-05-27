@@ -47,6 +47,9 @@ void UGrabber::SetupInputComponent()
 		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
 		InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
 	}
+	else {
+		UE_LOG(LogTemp, Error, TEXT("Could not find InputComponent"));
+	}
 }
 
 void UGrabber::Grab() {
