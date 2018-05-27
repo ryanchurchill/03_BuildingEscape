@@ -24,6 +24,10 @@ UOpenDoor::UOpenDoor()
 void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (!PressurePlate) {
+		UE_LOG(LogTemp, Error, TEXT("Could not find PressurePlate for object %s"), *(GetOwner()->GetName()));
+	}
 }
 
 
@@ -54,9 +58,9 @@ void UOpenDoor::OpenDoor()
 	// Find the owning actor
 	AActor* Owner = GetOwner();
 
-	FRotator NewRotation = FRotator(0.f, -90.f, 0.f);
-
-	Owner->SetActorRotation(NewRotation);
+	//FRotator NewRotation = FRotator(0.f, -90.f, 0.f);
+	//Owner->SetActorRotation(NewRotation);
+	OnOpenRequest.Broadcast();
 }
 
 void UOpenDoor::CloseDoor()
@@ -75,8 +79,7 @@ float UOpenDoor::GetTotalMassOfActorsOnPlate()
 
 	// Find all the overlapping actors
 	TArray<AActor*> OverlappingActors;
-	if (!PressurePlate) {
-		UE_LOG(LogTemp, Error, TEXT("Could not find pressure plate"));
+	if (!PressurePlate) {		
 		return 0.f;
 	}
 	PressurePlate->GetOverlappingActors(OUT OverlappingActors);
