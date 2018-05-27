@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Components/PrimitiveComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Components/ActorComponent.h"
+#include "Engine/StaticMeshActor.h"
 #include "Engine/TriggerVolume.h"
 #include "OpenDoor.generated.h"
 
@@ -35,8 +37,8 @@ private:
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate = nullptr;
 
-	//UPROPERTY(EditAnywhere)
-	//UStaticMeshComponent* Button = nullptr;
+	UPROPERTY(EditAnywhere)
+	AStaticMeshActor* Button = nullptr;
 
 	float GetTotalMassOfActorsOnPlate();
 

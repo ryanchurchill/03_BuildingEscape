@@ -63,9 +63,11 @@ void UGrabber::Grab() {
 	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
 	auto ActorHit = HitResult.GetActor();
 	if (ActorHit) {
-		UE_LOG(LogTemp, Warning, TEXT("Actor Hit: %s"), *ComponentToGrab->GetOuter()->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("Actor Hit: %s"), *ComponentToGrab->GetOuter()->GetFullName());
 		if (ComponentToGrab->GetOuter()->GetName() == "DoorButton") {
-			PushDoorButton();
+			//PushDoorButton();
+			UE_LOG(LogTemp, Warning, TEXT("Button Hit"))
+			ComponentToGrab->SetHiddenInGame(true, true);
 		}
 		else {
 			if (!PhysicsHandle) { return; }
