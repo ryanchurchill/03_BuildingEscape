@@ -32,7 +32,8 @@ private:
 	UInputComponent* InputComponent = nullptr;
 
 	// Ray-cast and grab what's in reach
-	void Grab();	
+	void Grab();
+	void PushDoorButton();
 	void Release();
 
 	void FindPhysicsHandleComponent();

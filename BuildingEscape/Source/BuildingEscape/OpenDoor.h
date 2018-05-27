@@ -33,7 +33,10 @@ protected:
 
 private:	
 	UPROPERTY(EditAnywhere)
-	ATriggerVolume* PressurePlate = nullptr;	
+	ATriggerVolume* PressurePlate = nullptr;
+
+	//UPROPERTY(EditAnywhere)
+	//UStaticMeshComponent* Button = nullptr;
 
 	float GetTotalMassOfActorsOnPlate();
 

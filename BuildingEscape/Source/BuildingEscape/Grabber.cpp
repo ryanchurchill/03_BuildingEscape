@@ -63,15 +63,25 @@ void UGrabber::Grab() {
 	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
 	auto ActorHit = HitResult.GetActor();
 	if (ActorHit) {
-		if (!PhysicsHandle) { return; }
-		// attach physics handle to component
-		PhysicsHandle->GrabComponent(
-			ComponentToGrab,
-			NAME_None,
-			ComponentToGrab->GetOwner()->GetActorLocation(),
-			true
-		);
+		UE_LOG(LogTemp, Warning, TEXT("Actor Hit: %s"), *ComponentToGrab->GetOuter()->GetName());
+		if (ComponentToGrab->GetOuter()->GetName() == "DoorButton") {
+			PushDoorButton();
+		}
+		else {
+			if (!PhysicsHandle) { return; }
+			// attach physics handle to component
+			PhysicsHandle->GrabComponent(
+				ComponentToGrab,
+				NAME_None,
+				ComponentToGrab->GetOwner()->GetActorLocation(),
+				true
+			);
+		}
 	}
+}
+
+void UGrabber::PushDoorButton() {
+	UE_LOG(LogTemp, Warning, TEXT("Button Hit"))
 }
 
 void UGrabber::Release() {	
