@@ -3,12 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/PrimitiveComponent.h"
-#include "Components/StaticMeshComponent.h"
-#include "Components/ActorComponent.h"
-#include "Engine/StaticMeshActor.h"
-#include "Engine/TriggerVolume.h"
 #include "OpenDoor.generated.h"
+
+class UActorComponent;
+class ATriggerVolume;
+class AStaticMeshActor;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDoorEvent);
 
@@ -39,6 +38,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	AStaticMeshActor* Button = nullptr;
+
+	UFUNCTION()
+	void OnPressurePlateChange(AActor * OverlappedActor, AActor * OtherActor);
 
 	float GetTotalMassOfActorsOnPlate();
 

@@ -6,6 +6,9 @@
 #include "Math/Quat.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
+#include "Engine/TriggerVolume.h"
+#include "Engine/StaticMeshActor.h"
+#include "Components/PrimitiveComponent.h"
 
 #define OUT
 
@@ -14,7 +17,7 @@ UOpenDoor::UOpenDoor()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
 }
@@ -27,7 +30,10 @@ void UOpenDoor::BeginPlay()
 
 	if (!PressurePlate) {
 		UE_LOG(LogTemp, Error, TEXT("Could not find PressurePlate for object %s"), *(GetOwner()->GetName()));
+		return;
 	}
+
+	PressurePlate->OnActorBeginOverlap.AddDynamic(this, &UOpenDoor::OnPressurePlateChange);
 }
 
 
@@ -38,7 +44,27 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// Poll the Trigger Volume
+	//// Poll the Trigger Volume
+	//if (GetTotalMassOfActorsOnPlate() > TriggerMass) // TODO: make into param
+	//{
+	//	OnOpen.Broadcast();
+	//}
+	//else
+	//{
+	//	OnClose.Broadcast();
+	//}
+
+	//if (Button) {
+	//	if (Button->GetStaticMeshComponent()->bHiddenInGame == 1)
+	//	{
+	//		OnOpen.Broadcast();
+	//	}
+	//}
+	
+}
+
+void UOpenDoor::OnPressurePlateChange(AActor* OverlappedActor, AActor* OtherActor)
+{
 	if (GetTotalMassOfActorsOnPlate() > TriggerMass) // TODO: make into param
 	{
 		OnOpen.Broadcast();
@@ -47,14 +73,6 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	{
 		OnClose.Broadcast();
 	}
-
-	if (Button) {
-		if (Button->GetStaticMeshComponent()->bHiddenInGame == 1)
-		{
-			OnOpen.Broadcast();
-		}
-	}
-	
 }
 
 
@@ -64,7 +82,7 @@ float UOpenDoor::GetTotalMassOfActorsOnPlate()
 
 	// Find all the overlapping actors
 	TArray<AActor*> OverlappingActors;
-	if (!PressurePlate) {		
+	if (!PressurePlate) {
 		return 0.f;
 	}
 	PressurePlate->GetOverlappingActors(OUT OverlappingActors);
