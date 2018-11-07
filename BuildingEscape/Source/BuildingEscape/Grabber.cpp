@@ -2,9 +2,11 @@
 
 #include "Grabber.h"
 #include "Components/PrimitiveComponent.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "ButtonActor.h"
 
 #define OUT
 
@@ -52,37 +54,35 @@ void UGrabber::SetupInputComponent()
 	}
 }
 
+// Grab or push
 void UGrabber::Grab() {
 	UE_LOG(LogTemp, Warning, TEXT("Grab pressed"));
 
 	// Line trace and see if we reach any actors with physics body collision channel set
-	GetFirstPhysicsBodyInReach();
-
 	// If we hit something then attach a physics handle
 	auto HitResult = GetFirstPhysicsBodyInReach();	
-	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
+	UPrimitiveComponent* ComponentHit = HitResult.GetComponent();
 	auto ActorHit = HitResult.GetActor();
 	if (ActorHit) {
-		UE_LOG(LogTemp, Warning, TEXT("Actor Hit: %s"), *ComponentToGrab->GetOuter()->GetFullName());
-		if (ComponentToGrab->GetOuter()->GetName() == "DoorButton") {
-			//PushDoorButton();
-			UE_LOG(LogTemp, Warning, TEXT("Button Hit"))
-			ComponentToGrab->SetHiddenInGame(true, true);
+		UE_LOG(LogTemp, Warning, TEXT("Actor Hit: %s"), *ComponentHit->GetOuter()->GetFullName());
+		AButtonActor* Button = Cast<AButtonActor>(ActorHit);
+		if (Button) {
+			PushDoorButton(Button);
 		}
 		else {
 			if (!PhysicsHandle) { return; }
 			// attach physics handle to component
 			PhysicsHandle->GrabComponent(
-				ComponentToGrab,
+				ComponentHit,
 				NAME_None,
-				ComponentToGrab->GetOwner()->GetActorLocation(),
+				ComponentHit->GetOwner()->GetActorLocation(),
 				true
 			);
 		}
 	}
 }
 
-void UGrabber::PushDoorButton() {
+void UGrabber::PushDoorButton(AButtonActor* Button) {
 	UE_LOG(LogTemp, Warning, TEXT("Button Hit"))
 }
 

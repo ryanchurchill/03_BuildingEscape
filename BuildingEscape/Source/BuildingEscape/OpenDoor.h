@@ -7,7 +7,7 @@
 
 class UActorComponent;
 class ATriggerVolume;
-class AStaticMeshActor;
+class AButtonActor;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDoorEvent);
 
@@ -32,12 +32,12 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-private:	
+private:
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate = nullptr;
 
 	UPROPERTY(EditAnywhere)
-	AStaticMeshActor* Button = nullptr;
+	AButtonActor* Button = nullptr;
 
 	UFUNCTION()
 	void OnPressurePlateChange(AActor * OverlappedActor, AActor * OtherActor);

@@ -29,7 +29,6 @@ void UOpenDoor::BeginPlay()
 	Super::BeginPlay();
 
 	if (!PressurePlate) {
-		UE_LOG(LogTemp, Error, TEXT("Could not find PressurePlate for object %s"), *(GetOwner()->GetName()));
 		return;
 	}
 

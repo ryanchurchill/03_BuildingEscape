@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Components/InputComponent.h"
-#include "PhysicsEngine/PhysicsHandleComponent.h"
 
 #include "Grabber.generated.h"
+
+class AButtonActor;
+class UInputComponent;
+class UPhysicsHandleComponent;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BUILDINGESCAPE_API UGrabber : public UActorComponent
@@ -32,8 +34,9 @@ private:
 	UInputComponent* InputComponent = nullptr;
 
 	// Ray-cast and grab what's in reach
+	// Bound to "Grab" Input via SetupInputComponent function
 	void Grab();
-	void PushDoorButton();
+	void PushDoorButton(AButtonActor* ComponentToGrab);
 	void Release();
 
 	void FindPhysicsHandleComponent();
@@ -41,7 +44,7 @@ private:
 	void SetupInputComponent();
 
 	// Return hit for first physics body in reach
-	FHitResult GetFirstPhysicsBodyInReach() const;	
+	FHitResult GetFirstPhysicsBodyInReach() const;
 
 	FVector GetReachLineStart() const;
 	FVector GetReachLineEnd() const;
