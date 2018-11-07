@@ -46,4 +46,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float TriggerMass = 1.f;
+
+	UFUNCTION()
+	void OpenDoor();
 };

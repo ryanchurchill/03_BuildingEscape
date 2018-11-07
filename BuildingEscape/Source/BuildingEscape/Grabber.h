@@ -36,7 +36,6 @@ private:
 	// Ray-cast and grab what's in reach
 	// Bound to "Grab" Input via SetupInputComponent function
 	void Grab();
-	void PushDoorButton(AButtonActor* ComponentToGrab);
 	void Release();
 
 	void FindPhysicsHandleComponent();

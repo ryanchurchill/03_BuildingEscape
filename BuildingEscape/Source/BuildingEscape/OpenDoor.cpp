@@ -9,6 +9,7 @@
 #include "Engine/TriggerVolume.h"
 #include "Engine/StaticMeshActor.h"
 #include "Components/PrimitiveComponent.h"
+#include "ButtonActor.h"
 
 #define OUT
 
@@ -28,11 +29,13 @@ void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!PressurePlate) {
-		return;
+	if (PressurePlate) {
+		PressurePlate->OnActorBeginOverlap.AddDynamic(this, &UOpenDoor::OnPressurePlateChange);
 	}
-
-	PressurePlate->OnActorBeginOverlap.AddDynamic(this, &UOpenDoor::OnPressurePlateChange);
+	if (Button) {
+		UE_LOG(LogTemp, Warning, TEXT("Setting OnPushed Delegate"));
+		Button->OnPushed.AddDynamic(this, &UOpenDoor::OpenDoor);
+	}
 }
 
 
@@ -42,31 +45,13 @@ void UOpenDoor::BeginPlay()
 void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	//// Poll the Trigger Volume
-	//if (GetTotalMassOfActorsOnPlate() > TriggerMass) // TODO: make into param
-	//{
-	//	OnOpen.Broadcast();
-	//}
-	//else
-	//{
-	//	OnClose.Broadcast();
-	//}
-
-	//if (Button) {
-	//	if (Button->GetStaticMeshComponent()->bHiddenInGame == 1)
-	//	{
-	//		OnOpen.Broadcast();
-	//	}
-	//}
-	
 }
 
 void UOpenDoor::OnPressurePlateChange(AActor* OverlappedActor, AActor* OtherActor)
 {
 	if (GetTotalMassOfActorsOnPlate() > TriggerMass) // TODO: make into param
 	{
-		OnOpen.Broadcast();
+		OpenDoor();
 	}
 	else
 	{
@@ -74,6 +59,11 @@ void UOpenDoor::OnPressurePlateChange(AActor* OverlappedActor, AActor* OtherActo
 	}
 }
 
+void UOpenDoor::OpenDoor()
+{
+	UE_LOG(LogTemp, Warning, TEXT("OpenDoor()"));
+	OnOpen.Broadcast();
+}
 
 float UOpenDoor::GetTotalMassOfActorsOnPlate()
 {

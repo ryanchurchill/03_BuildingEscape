@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "ButtonActor.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FButtonActorDelegate);
+
 UCLASS()
 class BUILDINGESCAPE_API AButtonActor : public AActor
 {
@@ -14,6 +16,10 @@ class BUILDINGESCAPE_API AButtonActor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AButtonActor();
+
+	void Push();
+
+	FButtonActorDelegate OnPushed;
 
 protected:
 	// Called when the game starts or when spawned

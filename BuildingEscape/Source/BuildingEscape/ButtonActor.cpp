@@ -25,3 +25,8 @@ void AButtonActor::Tick(float DeltaTime)
 
 }
 
+void AButtonActor::Push()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Button Pushed"));
+	OnPushed.Broadcast();
+}

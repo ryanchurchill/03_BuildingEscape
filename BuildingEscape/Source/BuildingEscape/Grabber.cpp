@@ -67,7 +67,7 @@ void UGrabber::Grab() {
 		UE_LOG(LogTemp, Warning, TEXT("Actor Hit: %s"), *ComponentHit->GetOuter()->GetFullName());
 		AButtonActor* Button = Cast<AButtonActor>(ActorHit);
 		if (Button) {
-			PushDoorButton(Button);
+			Button->Push();
 		}
 		else {
 			if (!PhysicsHandle) { return; }
@@ -80,10 +80,6 @@ void UGrabber::Grab() {
 			);
 		}
 	}
-}
-
-void UGrabber::PushDoorButton(AButtonActor* Button) {
-	UE_LOG(LogTemp, Warning, TEXT("Button Hit"))
 }
 
 void UGrabber::Release() {	
